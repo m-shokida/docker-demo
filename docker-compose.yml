@@ -1,19 +1,26 @@
 version: '3'
 
 services:
-  
+  db:
+    container_name: demo.db
+    image: mysql:8.0.29
+    environment:
+      MYSQL_ROOT_PASSWORD: root
   web:
+    container_name: demo.web
     build:
-      context: ./docker/web
+      context: ./docker/nginx
       dockerfile: Dockerfile
-    command: python3 manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
     ports:
-      - "8000:8000"
+      - "8080:8000"
     depends_on:
       - db
-  db:
-    image: mysql
-    environment:
-     MYSQL_ROOT_PASSWORD: root
+  app:
+    container_name: demo.app
+    build:
+      context: ./docker/python
+      dockerfile: Dockerfile
+    tty: true #　what's this!
+    stdin_open: true #　what's this!
+    depends_on:
+      - db
