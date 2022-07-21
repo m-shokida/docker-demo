@@ -12,7 +12,7 @@ services:
       context: ./docker/nginx
       dockerfile: Dockerfile
     ports:
-      - "8080:8000"
+      - "9999:8000"
     depends_on:
       - db
   app:
@@ -20,6 +20,10 @@ services:
     build:
       context: ./docker/python
       dockerfile: Dockerfile
+    volumes:
+      - .:/code
+    ports:
+        - "8080:8000"
     tty: true #　what's this!
     stdin_open: true #　what's this!
     depends_on:
